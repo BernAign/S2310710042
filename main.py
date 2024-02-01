@@ -44,7 +44,7 @@ def create_arg_parser():
     arg_parser.add_argument("-sand", action="store_true", help="roadtype (always dry)")
 
     #additional arguments
-    arg_parser.add_argument("--gradient", type=float, nargs='?', default = 0, help="enter gradient (example: 12.5 (default = 0))")
+#    arg_parser.add_argument("--gradient", type=float, nargs='?', default = 0, help="enter gradient (example: 12.5 (default = 0))")  not implemented yet
     arg_parser.add_argument("--wet", action="store_true", help="roadcondition (default: dry)")
     args = arg_parser.parse_args()
     
@@ -56,9 +56,12 @@ def create_arg_parser():
     return args
 
 def main():
+    """initialize argparser afterwards object will be created with given arguments
+        a plot is shown in an external window, if you close it the plot will be saved
+    """
     args = create_arg_parser()
-    
     test_car = Vehicle(args)
+    print(str(test_car))
     test_car.plot()
     
 if __name__ == "__main__":

@@ -14,21 +14,19 @@ class Vehicle:
         self.name = args.pdfFileName
         self.path = args.pdfFilePath
         self.mass = args.mass
-        self.gradient = np.deg2rad(args.gradient)
+        #self.gradient = np.deg2rad(args.gradient) not implemented yet
         self.friction = self.set_roadtype(args)
         self.velocity = args.velocity
-        # self.deceleration = constants.GRAVITATIONAL_ACCELERATION * self.friction
-        self.deceleration = constants.GRAVITATIONAL_ACCELERATION*(np.sin(self.gradient)-np.cos(self.gradient)*self.friction)+self.velocity*self.deceleration_time
+        self.deceleration = constants.GRAVITATIONAL_ACCELERATION * self.friction
         self.deceleration_time = np.linspace(0, self.velocity/self.deceleration, 100, endpoint=True)
         Vehicle.amount += 1
-        print(self.deceleration)
 
     # destructor
     def __del__(self):
         Vehicle.amount -= 1
 
     # string method
-    def __repr__(self):
+    def __str__(self):
         return f"Mass: {self.mass}, Friction: {self.friction}, Velocity: {self.velocity}"
         
     def  get_brake_velocity(self):
@@ -38,7 +36,6 @@ class Vehicle:
                    from v0 to 0
         """
         brake_velocity = self.velocity - self.deceleration * self.deceleration_time
-        print(brake_velocity)
         return brake_velocity
     
     # deceleration method
@@ -48,7 +45,7 @@ class Vehicle:
             float:  returns an array with 100 timestamps based on s(t)=1/2*(t(2*v-a*t)
                     from s0 to absolute standstill
         """
-        brake_distance = 0.5 * (self.deceleration_time*(2 * self.velocity - self.deceleration * self.deceleration_time))
+        brake_distance = 0.5 * (self.deceleration_time * (2 * self.velocity - self.deceleration * self.deceleration_time))
         return brake_distance
     
     def plot(self):
@@ -59,7 +56,6 @@ class Vehicle:
                    will return a list with two plots over time
 
         """
-        
         #default figure size A4
         fig, axs = plt.subplots(1, 2, figsize=(11.69, 8.27))
         x_time = self.deceleration_time
